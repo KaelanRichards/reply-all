@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "669301170940",
+    "firebase_url": "https://project-ligmuh.firebaseio.com",
+    "project_id": "project-ligmuh",
+    "storage_bucket": "project-ligmuh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669301170940:android:5668c5d8e35641c5272d79",
+        "android_client_info": {
+          "package_name": "org.reply.all"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669301170940-h8rfma9qojatqinld03sblj6hjvj39hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwWJPi5WmwtYE2t8CRimrDjIKeRznk1gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669301170940-h8rfma9qojatqinld03sblj6hjvj39hq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "669301170940-7f9q4f5bv6m68107uh6utfbrevj1sak8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reply.all"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
