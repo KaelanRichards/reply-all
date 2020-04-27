@@ -1,10 +1,9 @@
 <template>
-  <Page>
+  <Page actionBarHidden="true" backgroundSpanUnderStatusBar="true">
     <FlexboxLayout class="page">
       <StackLayout class="form">
-        <Image class="logo" src="~/assets/images/NAtiveScript-Vue.png" />
-        <Label class="header" text="APP NAME" />
-
+        <Image class="logo" src="~/assets/images/NativeScript-Vue.png" />
+        <Label class="header" text="REPLY_ALL" />
         <StackLayout class="input-field" marginBottom="25">
           <TextField
             class="input"
@@ -19,7 +18,6 @@
           />
           <StackLayout class="hr-light" />
         </StackLayout>
-
         <StackLayout class="input-field" marginBottom="25">
           <TextField
             ref="password"
@@ -33,7 +31,6 @@
           />
           <StackLayout class="hr-light" />
         </StackLayout>
-
         <StackLayout v-show="!isLoggingIn" class="input-field">
           <TextField
             ref="confirmPassword"
@@ -46,7 +43,6 @@
           />
           <StackLayout class="hr-light" />
         </StackLayout>
-
         <Button
           :text="isLoggingIn ? 'Log In' : 'Sign Up'"
           @tap="submit"
@@ -57,82 +53,29 @@
           @tap="loginFacebook"
           class="btn btn-primary m-t-20"
         />
-
         <Label
           v-show="isLoggingIn"
           text="Forgot your password?"
           class="login-label"
           @tap="forgotPassword"
         />
+        <Label class="login-label sign-up-label" @tap="toggleForm">
+          <FormattedString>
+            <Span
+              :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'"
+            />
+            <Span :text="isLoggingIn ? 'Sign up' : ''" class="bold" />
+          </FormattedString>
+        </Label>
       </StackLayout>
-
-      <Label class="login-label sign-up-label" @tap="toggleForm">
-        <FormattedString>
-          <Span
-            :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'"
-          />
-          <Span :text="isLoggingIn ? 'Sign up' : ''" class="bold" />
-        </FormattedString>
-      </Label>
     </FlexboxLayout>
   </Page>
 </template>
 <script>
-import firebase from "nativescript-plugin-firebase";
-// refactor into a serperate service file
-const userService = {
-  async register(user) {
-    return await firebase.createUser({
-      email: user.email,
-      password: user.password,
-    });
-  },
-  async login(user) {
-    return await firebase.login({
-      type: firebase.LoginType.PASSWORD,
-      passwordOptions: {
-        email: user.email,
-        password: user.password,
-      },
-    });
-  },
-  async loginFacebook(user) {
-    await firebase
-      .login({
-        type: firebase.LoginType.FACEBOOK,
-        facebookOptions: {
-          // full list: https://developers.facebook.com/docs/facebook-login/permissions/
-          scope: ["public_profile", "email"], // optional: defaults to ['public_profile', 'email']
-        },
-      })
-      .then((result) => {
-        //console.log("Returned from firebase with result");
-        //console.dir(result);
-        return Promise.resolve(JSON.stringify(result));
-      })
-      .catch((error) => {
-        console.error(error);
-        return Promise.reject(error);
-      });
-  },
-  async resetPassword(email) {
-    return await firebase.resetPassword({
-      email: email,
-    });
-  },
-};
-// A stub for the main page of your app. In a real app you’d put this page in its own .vue file.
-const HomePage = {
-  template: `
-	<Page>
-        <Label class="m-20" textWrap="true" text="You have successfully authenticated. This is where you build your core application functionality."></Label>
-	</Page>
-	`,
-};
+import HomePage from "./App";
+import { LoadingIndicator } from "@nstudio/nativescript-loading-indicator";
 
-var LoadingIndicator = require("nativescript-loading-indicator")
-  .LoadingIndicator;
-var loader = new LoadingIndicator();
+const loader = new LoadingIndicator();
 
 export default {
   data() {
@@ -145,6 +88,7 @@ export default {
       },
     };
   },
+
   methods: {
     toggleForm() {
       this.isLoggingIn = !this.isLoggingIn;
@@ -154,7 +98,6 @@ export default {
         this.alert("Please provide both an email address and password.");
         return;
       }
-      loader.show();
       if (this.isLoggingIn) {
         this.login();
       } else {
@@ -162,21 +105,36 @@ export default {
       }
     },
     login() {
-      userService
+      loader.show(global.loaderOptions);
+      this.$userService
         .login(this.user)
-        .then(() => {
+        .then((currentUser) => {
           loader.hide();
-          this.$navigateTo(HomePage);
+          //   if (!currentUser.emailVerified) {
+          //     this.alert(
+          //       "Please click on the link in the verification email sent during registration. Check your Spam folder for a new link we've just emailed."
+          //     );
+          //     firebase.sendEmailVerification().then(
+          //       function() {
+          //         console.log("email sent");
+          //       },
+          //       function(error) {
+          //         console.error("Error sending email verification: ", error);
+          //       }
+          //     );
+          //     return false;
+          //   }
+          this.$navigateTo(HomePage, { clearHistory: true });
         })
         .catch((err) => {
-          console.error(err);
           loader.hide();
-          this.alert(err);
+          console.log(err);
+          this.alert("Unfortunately we could not find your account.");
         });
     },
     loginFacebook() {
       //loader.show();//Don't use this for facebook logins, as the indicator covers the UI on IOS
-      userService
+      this.$userService
         .loginFacebook(this.user)
         .then(() => {
           //loader.hide();
@@ -205,12 +163,12 @@ export default {
         this.alert("Your password must at least 6 characters.");
         return;
       }
-      userService
+      this.$userService
         .register(this.user)
         .then(() => {
-          loader.hide();
           this.alert("Your account was successfully created.");
           this.isLoggingIn = true;
+          loader.hide();
         })
         .catch((err) => {
           console.error(err);
@@ -229,8 +187,8 @@ export default {
         cancelButtonText: "Cancel",
       }).then((data) => {
         if (data.result) {
-          loader.show();
-          userService
+          loader.show(global.loaderOptions);
+          this.$userService
             .resetPassword(data.text.trim())
             .then(() => {
               loader.hide();
@@ -269,61 +227,52 @@ export default {
   align-items: center;
   flex-direction: column;
 }
-
 .form {
   margin-left: 30;
   margin-right: 30;
   flex-grow: 2;
   vertical-align: middle;
 }
-
 .logo {
   margin-bottom: 12;
   height: 90;
   font-weight: bold;
 }
-
 .header {
   horizontal-align: center;
   font-size: 25;
   font-weight: 600;
   margin-bottom: 70;
   text-align: center;
-  color: #d51a1a;
+  color: rgb(51, 51, 206);
 }
-
 .input-field {
   margin-bottom: 25;
 }
-
 .input {
   font-size: 18;
   placeholder-color: #a8a8a8;
 }
-
 .input-field .input {
   font-size: 54;
 }
-
 .btn-primary {
   height: 50;
   margin: 30 5 15 5;
-  background-color: #d51a1a;
+  background-color: rgb(51, 51, 206);
+  color: white;
   border-radius: 5;
   font-size: 20;
   font-weight: 600;
 }
-
 .login-label {
   horizontal-align: center;
   color: #a8a8a8;
   font-size: 16;
 }
-
 .sign-up-label {
   margin-bottom: 20;
 }
-
 .bold {
   color: #000000;
 }

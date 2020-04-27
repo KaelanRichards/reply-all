@@ -1,32 +1,83 @@
 import Vue from "nativescript-vue";
 import VueDevtools from "nativescript-vue-devtools";
 // import App from './components/App'
-import LoginPage from "./components/LoginPage";
+import firebase from "nativescript-plugin-firebase";
+
+import routes from "./router";
+import store from "./store";
+
+import BackendService from "./services/BackendService";
+import UserService from "./services/UserService";
+
+export const backendService = new BackendService();
+export const userService = new UserService();
+
+Vue.prototype.$store = store;
+Vue.prototype.$userService = userService;
+// Vue.prototype.$changeRoute = (to, options) => {
+//   Vue.navigateTo(routes[to], options);
+// };
 
 if (TNS_ENV !== "production") {
   Vue.use(VueDevtools);
 }
-import store from "./store";
 
-// Prints Vue logs when --env.production is *NOT* set while building
-Vue.config.silent = TNS_ENV === "production";
+Vue.config.silent = false;
 
-var firebase = require("nativescript-plugin-firebase");
+// global configure default loader animation options
+global.loaderOptions = {
+  android: {
+    margin: 100,
+    dimBackground: true,
+    color: "#4B9ED6",
+    hideBezel: true,
+    mode: 3,
+  },
+  ios: {
+    dimBackground: true,
+    color: "#FFFFFF",
+    hideBezel: true,
+    mode: 3,
+  },
+};
+
 firebase
   .init({
-    // Optionally pass in properties for database, authentication and cloud messaging,
-    // see their respective docs.
+    // This is to get authentication crackalackin
+    //
+    // onAuthStateChanged: (data) => {
+    //   // optional
+    //   console.log(
+    //     (data.loggedIn ? "Logged in to firebase" : "Logged out from firebase") +
+    //       " (init's onAuthStateChanged callback)"
+    //   );
+    //   if (data.loggedIn) {
+    //     backendService.token = data.user.uid;
+    //     console.log(data.user.uid);
+    //     store.commit("setUser", data.user);
+    //     Vue.navigateTo(routes.home, { clearHistory: true });
+    //   } else {
+    //     backendService.token = "";
+    //     Vue.navigateTo(routes.login, { clearHistory: true });
+    //   }
+    // },
   })
   .then(
-    function(instance) {
+    (instance) => {
       console.log("firebase.init done");
     },
-    function(error) {
-      console.log("firebase.init error: " + error);
+    (error) => {
+      console.log(`firebase.init error: ${error}`);
     }
   );
 
 new Vue({
   store,
-  render: (h) => h("frame", [h(LoginPage)]),
+  render(h) {
+    return h("frame", [
+      h(routes.login),
+      // when you get auth firgured out
+      // h(backendService.isLoggedIn() ? routes.home : routes.login),
+    ]);
+  },
 }).$start();
