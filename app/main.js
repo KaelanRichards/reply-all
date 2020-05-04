@@ -9,8 +9,14 @@ import store from "./store";
 import BackendService from "./services/BackendService";
 import UserService from "./services/UserService";
 
+import RadDataForm from "nativescript-ui-dataform/vue";
+import RadAutoComplete from "nativescript-ui-autocomplete/vue";
+
 export const backendService = new BackendService();
 export const userService = new UserService();
+
+Vue.use(RadAutoComplete);
+Vue.use(RadDataForm);
 
 Vue.prototype.$store = store;
 Vue.prototype.$userService = userService;
@@ -40,6 +46,11 @@ global.loaderOptions = {
     mode: 3,
   },
 };
+
+Vue.registerElement(
+  "CardView",
+  () => require("@nstudio/nativescript-cardview").CardView
+);
 
 firebase
   .init({

@@ -49,9 +49,10 @@
           class="btn btn-primary m-t-20"
         />
         <Button
-          text="Login with Facebook"
+          v-show="isLoggingIn"
+          :text="'\uf09a' + ' Facebook login'"
           @tap="loginFacebook"
-          class="btn btn-primary m-t-20"
+          class="fab btn btn-active"
         />
         <Label
           v-show="isLoggingIn"
@@ -138,7 +139,7 @@ export default {
         .loginFacebook(this.user)
         .then(() => {
           //loader.hide();
-          this.$navigateTo(HomePage);
+          this.$navigateTo(HomePage, { clearHistory: true });
         })
         .catch((err) => {
           //loader.hide();

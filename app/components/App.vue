@@ -1,32 +1,68 @@
 <template>
-    <Page>
-        <ActionBar title="Welcome to NativeScript-Vue!"/>
-        <GridLayout columns="*" rows="*">
-            <Label class="message" :text="msg" col="0" row="0"/>
-        </GridLayout>
-    </Page>
+  <Page>
+    <StackLayout>
+      <!-- downloaded a card component package to use but we chillin for now -->
+      <!-- No styles applied -->
+      <Button text="Button" @tap="goToCreateGroup"></Button>
+    </StackLayout>
+  </Page>
 </template>
 
-<script >
-  export default {
-    data() {
-      return {
-        msg: 'Hello World!'
-      }
-    }
-  }
+<script>
+import routes from "../router";
+
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    goToCreateGroup() {
+      //navigate to create group page
+      this.$navigateTo(routes.createGroup);
+    },
+  },
+};
 </script>
 
 <style scoped>
-    ActionBar {
-        background-color: #53ba82;
-        color: #ffffff;
-    }
+/* ActionBar {
+  background-color: #ffffff;
+  color: #ffffff;
+} */
+.page {
+  background-color: rgb(237, 237, 237);
+}
 
-    .message {
-        vertical-align: center;
-        text-align: center;
-        font-size: 20;
-        color: #333333;
-    }
+.cardStyle {
+  background-color: #fff;
+  color: rgb(43, 43, 43);
+}
+
+.cardContent {
+  padding: 20;
+  font-weight: bold;
+  font-size: 30;
+}
+
+.my-button {
+  android-elevation: 4;
+  background-color: lightseagreen;
+  border-color: darkolivegreen;
+  border-radius: 20;
+  border-width: 1;
+  color: whitesmoke;
+  font-size: 18;
+  font-weight: bold;
+}
+
+.my-button:active {
+  android-elevation: 8;
+  background-color: whitesmoke;
+  border-color: darkolivegreen;
+  border-radius: 20;
+  border-width: 1;
+  color: lightseagreen;
+  font-size: 18;
+  font-weight: bold;
+}
 </style>

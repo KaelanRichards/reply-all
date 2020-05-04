@@ -18,6 +18,7 @@
     "run-iphone": "tns run ios --device 'iPhone 8'"
   },
   "dependencies": {
+    "@nstudio/nativescript-cardview": "^1.0.0",
     "@nstudio/nativescript-loading-indicator": "^3.0.4",
     "@vue/devtools": "^5.3.3",
     "email-validator": "^2.0.4",
@@ -25,6 +26,8 @@
     "nativescript-plugin-firebase": "^10.5.2",
     "nativescript-socketio": "^3.3.1",
     "nativescript-toasty": "^3.0.0-alpha.2",
+    "nativescript-ui-autocomplete": "^6.0.1",
+    "nativescript-ui-dataform": "^6.0.0",
     "nativescript-vue": "^2.6.1",
     "nativescript-vue-devtools": "^1.4.0",
     "tns-core-modules": "^6.5.1",
