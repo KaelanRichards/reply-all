@@ -1,7 +1,7 @@
 https://www.nativescript.org/blog/building-a-simple-progressbar-for-your-nativescript-app
 
 <template>
-  <StackLayout>
+  <StackLayout @tap="goToPage">
     <Label :text="promptName" class="progressbar-text"></Label>
 
     <GridLayout :columns="columns" class="progressbar">
@@ -11,15 +11,25 @@ https://www.nativescript.org/blog/building-a-simple-progressbar-for-your-natives
 </template>
 
 <script>
+import routes from "~/router";
+
 export default {
   props: {
     columns: Number,
     promptName: String,
+    promptType: String,
   },
 
   methods: {
     setProgressbarWidth(percent) {
       this.columns = percent + "*," + (100 - percent) + "*";
+    },
+    goToPage() {
+      if (this.promptType === "vote") {
+        this.$navigateTo(routes.vote);
+      } else if (this.promptType === "respond") {
+        this.$navigateTo(routes.respond);
+      }
     },
   },
   created() {
