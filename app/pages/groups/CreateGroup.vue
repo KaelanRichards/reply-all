@@ -34,7 +34,7 @@
       </RadAutoCompleteTextView>
       <Button
         :text="'Create Group'"
-        @tap="createGroup"
+        @tap="navigateToGroupHome"
         class="btn btn-primary m-t-20"
       />
     </StackLayout>
@@ -42,9 +42,12 @@
 </template>
 
 <script>
+import routes from "~/router";
+
 const observableArrayModule = require("tns-core-modules/data/observable-array");
 const ObservableArray = observableArrayModule.ObservableArray;
 const autocompleteModule = require("nativescript-ui-autocomplete");
+
 export default {
   data() {
     return {
@@ -68,10 +71,13 @@ export default {
       ]),
     };
   },
-  methods() {
+  methods: {
     //   createGroup() {
     //       // submit group object to firebase to create group
     //   },
+    navigateToGroupHome() {
+      this.$navigateTo(routes.home, { backstackVisible: false });
+    },
   },
 };
 </script>

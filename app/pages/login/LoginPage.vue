@@ -73,7 +73,7 @@
   </Page>
 </template>
 <script>
-import HomePage from "./App";
+import routes from "~/router";
 import { LoadingIndicator } from "@nstudio/nativescript-loading-indicator";
 
 const loader = new LoadingIndicator();
@@ -111,21 +111,11 @@ export default {
         .login(this.user)
         .then((currentUser) => {
           loader.hide();
-          //   if (!currentUser.emailVerified) {
-          //     this.alert(
-          //       "Please click on the link in the verification email sent during registration. Check your Spam folder for a new link we've just emailed."
-          //     );
-          //     firebase.sendEmailVerification().then(
-          //       function() {
-          //         console.log("email sent");
-          //       },
-          //       function(error) {
-          //         console.error("Error sending email verification: ", error);
-          //       }
-          //     );
-          //     return false;
-          //   }
-          this.$navigateTo(HomePage, { clearHistory: true });
+          this.$navigateTo(
+            routes.home,
+            { clearHistory: true },
+            { backstackVisible: false }
+          );
         })
         .catch((err) => {
           loader.hide();
@@ -139,7 +129,11 @@ export default {
         .loginFacebook(this.user)
         .then(() => {
           //loader.hide();
-          this.$navigateTo(HomePage, { clearHistory: true });
+          this.$navigateTo(
+            routes.home,
+            { clearHistory: true },
+            { backstackVisible: false }
+          );
         })
         .catch((err) => {
           //loader.hide();
@@ -166,8 +160,8 @@ export default {
       }
       this.$userService
         .register(this.user)
-        .then(() => {
-          this.alert("Your account was successfully created.");
+        .then((user) => {
+          this.alert("Your account was successfully created. Welcome!", user);
           this.isLoggingIn = true;
           loader.hide();
         })

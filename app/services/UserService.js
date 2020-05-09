@@ -4,30 +4,31 @@ import { backendService } from "../main";
 
 export default class UserService extends BackendService {
   async register(user) {
-    // if you want to implement an email verification option
-    //
-    // return await firebase
-    //   .createUser({
-    //     email: user.email,
-    //     password: user.password,
-    //   })
-    //   .then(function(response) {
-    //     firebase.sendEmailVerification().then(
-    //       function() {
-    //         alert(
-    //           "A verification email has been sent, click on the link to activate your account"
-    //         );
-    //       },
-    //       function(error) {
-    //         console.error("Error sending email verification: ", error);
-    //       }
-    //     );
-    //   });
-    const result = await firebase.createUser({
+    // create authentication for user
+    const createdUser = await firebase.createUser({
       email: user.email,
       password: user.password,
     });
-    return JSON.stringify(result);
+    //return JSON.stringify(result);
+
+    // create user document in firestore
+    await firebase.firestore.set("users", createdUser.uid, {
+      // admin: false,
+      email: user.email,
+      // fill these so the orderBy filter of the player dropdown works (it doesn't like undefined values)
+      firstname: "",
+      lastname: "",
+    });
+
+    const userDoc = await firebase.firestore.getDocument(
+      "users",
+      createdUser.uid
+    );
+
+    const fireStoreUser = userDoc.data();
+    fireStoreUser.ref = userDoc.ref;
+    fireStoreUser.id = createdUser.uid;
+    return fireStoreUser;
   }
 
   async login(user) {
@@ -38,15 +39,15 @@ export default class UserService extends BackendService {
     //     password: user.password,
     //   },
     // });
-    const result = await firebase.login({
+    const loggedInUser = await firebase.login({
       type: firebase.LoginType.PASSWORD,
       passwordOptions: {
         email: user.email,
         password: user.password,
       },
     });
-    backendService.token = result.uid;
-    return JSON.stringify(result);
+    backendService.token = loggedInUser.uid;
+    return JSON.stringify(loggedInUser);
   }
 
   async loginFacebook(user) {

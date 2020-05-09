@@ -1,9 +1,12 @@
-import Home from "../components/App";
-import Login from "../components/LoginPage";
-import CreateGroup from "../components/CreateGroup";
+import Groups from "../pages/groups/Groups";
+import Login from "../pages/login/LoginPage";
+import CreateGroup from "../pages/groups/CreateGroup";
+import Group from "../pages/groups/Group";
 
 const routes = {
-  home: Home,
+  home: Groups,
+  // Make dynamic
+  group: Group,
   login: Login,
   createGroup: CreateGroup,
 };

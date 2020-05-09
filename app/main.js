@@ -1,6 +1,5 @@
 import Vue from "nativescript-vue";
 import VueDevtools from "nativescript-vue-devtools";
-// import App from './components/App'
 import firebase from "nativescript-plugin-firebase";
 
 import routes from "./router";
@@ -86,7 +85,7 @@ new Vue({
   store,
   render(h) {
     return h("frame", [
-      h(routes.login),
+      h(routes.home),
       // when you get auth firgured out
       // h(backendService.isLoggedIn() ? routes.home : routes.login),
     ]);

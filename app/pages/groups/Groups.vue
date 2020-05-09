@@ -3,13 +3,14 @@
     <StackLayout>
       <!-- downloaded a card component package to use but we chillin for now -->
       <!-- No styles applied -->
-      <Button text="Button" @tap="goToCreateGroup"></Button>
+      <Button text="Create button" @tap="goToCreateGroup"></Button>
+      <Button text="group page" @tap="goToGroupPage"></Button>
     </StackLayout>
   </Page>
 </template>
 
 <script>
-import routes from "../router";
+import routes from "~/router";
 
 export default {
   data() {
@@ -18,7 +19,19 @@ export default {
   methods: {
     goToCreateGroup() {
       //navigate to create group page
-      this.$navigateTo(routes.createGroup);
+      this.$navigateTo(
+        routes.createGroup,
+        { clearHistory: true },
+        { backstackVisible: false }
+      );
+    },
+    goToGroupPage() {
+      //navigate to create group page
+      this.$navigateTo(
+        routes.group,
+        { clearHistory: true },
+        { backstackVisible: false }
+      );
     },
   },
 };
