@@ -2,7 +2,7 @@
   <StackLayout class="home-panel">
     <CardView
       v-for="group in groupsArray"
-      v-bind:key="group"
+      :key="group.id"
       class="card"
       elevation="40"
       radius="10"
@@ -19,13 +19,13 @@
 <script>
 export default {
   props: {
-    groups: Array,
+    groups: Array
   },
   data() {
     return {
-      groupsArray: groups,
+      groupsArray: this.groups
     };
-  },
+  }
 };
 </script>
 <style scoped>
