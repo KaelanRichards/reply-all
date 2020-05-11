@@ -5,7 +5,49 @@ import firebase from "nativescript-plugin-firebase";
 Vue.use(Vuex);
 
 const state = {
-  user: null,
+  user: {
+    userId: "",
+    userEmail: "",
+    groups: [
+      {
+        groupName: "",
+        userCount: "",
+        prompts: [{ promptStatus: "" }],
+      },
+    ],
+    pendingGroupInvites: [],
+  },
+  groups: {
+    groupName: "",
+    groupUsers: [
+      {
+        userId: "",
+        userName: "",
+        promptsWon: "",
+      },
+    ],
+    // need to be able to scale this better so split out into a seperate collection
+    activePrompts: {
+      promptStatus: "",
+      promptText: "",
+      PromptTimeRemaing: "",
+      promptWinner: {
+        userId: "",
+        imageUrl: "",
+      },
+    },
+  },
+  promptVote: {
+    promptText: "",
+    promptResponses: [
+      {
+        userId: "",
+        userName: "",
+        imageUrl: "",
+        votes: "",
+      },
+    ],
+  },
 };
 
 const getters = {};
@@ -13,6 +55,9 @@ const getters = {};
 const mutations = {
   setUser: (state, user) => {
     state.user = user;
+  },
+  setGroups: (state, groups) => {
+    state.groups = groups;
   },
 };
 
@@ -26,6 +71,32 @@ const actions = {
         console.log(errorMessage);
       }
     );
+  },
+  fetchGroups: ({ state, commit }) => {
+    firebase
+      .database()
+      .ref("groups")
+      .orderByChild("userId")
+      .equalTo(state.user.uid)
+      .once("value", function(data) {
+        const obj = data.val();
+        const groups = Object.keys(obj || {}).map((key) => ({
+          id: key,
+          ClassName: obj[key].ClassName,
+          groupName: obj[key].groupName,
+          groupUsers: obj[key].groupUsers,
+          prompts: obj[key].prompts,
+        }));
+        commit("setGroups", groups);
+      });
+  },
+  associateUserToGroup(context, payload) {
+    return firebase
+      .database()
+      .ref("users/" + payload.userId + "/groups/" + payload.groupId)
+      .update({
+        groupName: payload.groupName,
+      });
   },
 };
 

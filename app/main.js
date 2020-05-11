@@ -16,6 +16,10 @@ export const userService = new UserService();
 
 Vue.use(RadAutoComplete);
 Vue.use(RadDataForm);
+Vue.registerElement(
+  "CardView",
+  () => require("@nstudio/nativescript-cardview").CardView
+);
 
 Vue.prototype.$store = store;
 Vue.prototype.$userService = userService;
@@ -46,29 +50,23 @@ global.loaderOptions = {
   },
 };
 
-Vue.registerElement(
-  "CardView",
-  () => require("@nstudio/nativescript-cardview").CardView
-);
-
 firebase
   .init({
-    // This is to get authentication crackalackin
-    //
-    // onAuthStateChanged: (data) => {
+    // Listens for authentication state changes
+    // onAuthStateChanged: (user) => {
     //   // optional
     //   console.log(
-    //     (data.loggedIn ? "Logged in to firebase" : "Logged out from firebase") +
+    //     (user.loggedIn ? "Logged in to firebase" : "Logged out from firebase") +
     //       " (init's onAuthStateChanged callback)"
     //   );
-    //   if (data.loggedIn) {
-    //     backendService.token = data.user.uid;
-    //     console.log(data.user.uid);
-    //     store.commit("setUser", data.user);
-    //     Vue.navigateTo(routes.home, { clearHistory: true });
+    //   if (user.loggedIn) {
+    //     backendService.token = user.user.uid;
+    //     console.log(user.user.uid);
+    //     store.commit("setUser", user.user);
+    //     // Vue.navigateTo(routes.home, { clearHistory: true });
     //   } else {
     //     backendService.token = "";
-    //     Vue.navigateTo(routes.login, { clearHistory: true });
+    //     // Vue.navigateTo(routes.login, { clearHistory: true });
     //   }
     // },
   })

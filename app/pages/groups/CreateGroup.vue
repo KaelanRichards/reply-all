@@ -76,7 +76,10 @@ export default {
     //       // submit group object to firebase to create group
     //   },
     navigateToGroupHome() {
-      this.$navigateTo(routes.home, { backstackVisible: false });
+      this.$navigateTo(
+        routes.home
+        // { backstackVisible: false }
+      );
     },
   },
 };

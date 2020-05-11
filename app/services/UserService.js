@@ -9,15 +9,13 @@ export default class UserService extends BackendService {
       email: user.email,
       password: user.password,
     });
-    //return JSON.stringify(result);
 
     // create user document in firestore
     await firebase.firestore.set("users", createdUser.uid, {
       // admin: false,
       email: user.email,
+      userId: createdUser.uid,
       // fill these so the orderBy filter of the player dropdown works (it doesn't like undefined values)
-      firstname: "",
-      lastname: "",
     });
 
     const userDoc = await firebase.firestore.getDocument(

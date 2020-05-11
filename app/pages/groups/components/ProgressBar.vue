@@ -2,9 +2,9 @@ https://www.nativescript.org/blog/building-a-simple-progressbar-for-your-natives
 
 <template>
   <StackLayout @tap="goToPage">
-    <Label :text="promptName" class="progressbar-text"></Label>
+    <Label :text="promptNameVal" class="progressbar-text"></Label>
 
-    <GridLayout :columns="columns" class="progressbar">
+    <GridLayout :columns="columnsVal" class="progressbar">
       <StackLayout col="0" class="progressbar-value">
       </StackLayout> </GridLayout
   ></StackLayout>
@@ -18,6 +18,14 @@ export default {
     columns: Number,
     promptName: String,
     promptType: String,
+  },
+  data() {
+    return {
+      propVal: this.propsVal,
+      columnsVal: this.columns,
+      promptNameVal: this.promptName,
+      promptTypeVal: this.promptType,
+    };
   },
 
   methods: {

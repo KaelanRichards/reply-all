@@ -1,18 +1,28 @@
 <template>
   <Page>
-    <StackLayout>
-      <!-- downloaded a card component package to use but we chillin for now -->
-      <!-- No styles applied -->
-      <Button text="Create button" @tap="goToCreateGroup"></Button>
-      <Button text="group page" @tap="goToGroupPage"></Button>
-    </StackLayout>
+    <GroupActionBar></GroupActionBar>
+    <ScrollView>
+      <StackLayout>
+        <!-- downloaded a card component package to use but we chillin for now -->
+        <!-- No styles applied -->
+        <Button text="Create button" @tap="goToCreateGroup"></Button>
+        <Button text="group page" @tap="goToGroupPage"></Button>
+        <Card></Card>
+      </StackLayout>
+    </ScrollView>
   </Page>
 </template>
 
 <script>
 import routes from "~/router";
+import GroupActionBar from "./components/GroupActionBar";
+import Card from "./components/Card";
 
 export default {
+  components: {
+    GroupActionBar,
+    Card,
+  },
   data() {
     return {};
   },
@@ -20,17 +30,17 @@ export default {
     goToCreateGroup() {
       //navigate to create group page
       this.$navigateTo(
-        routes.createGroup,
-        { clearHistory: true },
-        { backstackVisible: false }
+        routes.createGroup
+        // { clearHistory: true },
+        // { backstackVisible: false }
       );
     },
     goToGroupPage() {
       //navigate to create group page
       this.$navigateTo(
-        routes.group,
-        { clearHistory: true },
-        { backstackVisible: false }
+        routes.group
+        // { clearHistory: true },
+        // { backstackVisible: false }
       );
     },
   },

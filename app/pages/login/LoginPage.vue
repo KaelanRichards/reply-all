@@ -112,9 +112,9 @@ export default {
         .then((currentUser) => {
           loader.hide();
           this.$navigateTo(
-            routes.home,
-            { clearHistory: true },
-            { backstackVisible: false }
+            routes.home
+            // { clearHistory: true },
+            // { backstackVisible: false }
           );
         })
         .catch((err) => {
@@ -130,9 +130,9 @@ export default {
         .then(() => {
           //loader.hide();
           this.$navigateTo(
-            routes.home,
-            { clearHistory: true },
-            { backstackVisible: false }
+            routes.home
+            // { clearHistory: true },
+            // { backstackVisible: false }
           );
         })
         .catch((err) => {
