@@ -10,9 +10,11 @@ import UserService from "./services/UserService";
 
 import RadDataForm from "nativescript-ui-dataform/vue";
 import RadAutoComplete from "nativescript-ui-autocomplete/vue";
+import GroupService from "./services/GroupService";
 
 export const backendService = new BackendService();
 export const userService = new UserService();
+export const groupService = new GroupService();
 
 Vue.use(RadAutoComplete);
 Vue.use(RadDataForm);
@@ -23,6 +25,7 @@ Vue.registerElement(
 
 Vue.prototype.$store = store;
 Vue.prototype.$userService = userService;
+Vue.prototype.$groupService = groupService;
 // Vue.prototype.$changeRoute = (to, options) => {
 //   Vue.navigateTo(routes[to], options);
 // };
@@ -83,7 +86,7 @@ new Vue({
   store,
   render(h) {
     return h("frame", [
-      h(routes.home),
+      h(routes.login),
       // when you get auth firgured out
       // h(backendService.isLoggedIn() ? routes.home : routes.login),
     ]);

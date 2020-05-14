@@ -7,7 +7,7 @@
         <!-- No styles applied -->
         <Button text="Create button" @tap="goToCreateGroup"></Button>
         <Button text="group page" @tap="goToGroupPage"></Button>
-        <Card></Card>
+        <Card :groups="this.group"></Card>
       </StackLayout>
     </ScrollView>
   </Page>
@@ -21,10 +21,25 @@ import Card from "./components/Card";
 export default {
   components: {
     GroupActionBar,
-    Card,
+    Card
   },
   data() {
-    return {};
+    return {
+      group: [
+        {
+          heading: "my card",
+          content: "this is my content"
+        },
+        {
+          heading: "my card2",
+          content: "this is my content"
+        },
+        {
+          heading: "my card3",
+          content: "this is my content"
+        }
+      ]
+    };
   },
   methods: {
     goToCreateGroup() {
@@ -43,7 +58,13 @@ export default {
         // { backstackVisible: false }
       );
     },
+    async getGroup() {
+      this.group = await this.$groupService.getGroups();
+    }
   },
+  created() {
+    this.getGroup();
+  }
 };
 </script>
 
