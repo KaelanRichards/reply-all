@@ -34,7 +34,7 @@
       </RadAutoCompleteTextView>
       <Button
         :text="'Create Group'"
-        @tap="navigateToGroupHome"
+        @tap="createGroup"
         class="btn btn-primary m-t-20"
       />
     </StackLayout>
@@ -51,11 +51,6 @@ const autocompleteModule = require("nativescript-ui-autocomplete");
 export default {
   data() {
     return {
-      // If I want to use raddatforms
-      //   group: {
-      //     groupName: "Group Name",
-      //     groupMembers: [],
-      //   },
       groupForm: {
         groupName: "",
         groupMembers: [],
@@ -72,9 +67,17 @@ export default {
     };
   },
   methods: {
-    //   createGroup() {
-    //       // submit group object to firebase to create group
-    //   },
+    createGroup() {
+      this.$groupService
+        .createGroup(groupForm)
+        .then((group) => {
+          console.log("Supposedly this a group array??, we'll see", group);
+          navigateToGroupHome();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     navigateToGroupHome() {
       this.$navigateTo(
         routes.home

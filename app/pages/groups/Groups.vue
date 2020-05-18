@@ -1,12 +1,14 @@
 <template>
   <Page>
-    <GroupActionBar></GroupActionBar>
+    <GroupActionBar text="Hello"></GroupActionBar>
     <ScrollView>
       <StackLayout>
         <!-- downloaded a card component package to use but we chillin for now -->
         <!-- No styles applied -->
         <Button text="Create button" @tap="goToCreateGroup"></Button>
         <Button text="group page" @tap="goToGroupPage"></Button>
+        <Button text="group page" @tap="getGroup"></Button>
+
         <Card :groups="this.group"></Card>
       </StackLayout>
     </ScrollView>
@@ -21,24 +23,11 @@ import Card from "./components/Card";
 export default {
   components: {
     GroupActionBar,
-    Card
+    Card,
   },
   data() {
     return {
-      group: [
-        {
-          heading: "my card",
-          content: "this is my content"
-        },
-        {
-          heading: "my card2",
-          content: "this is my content"
-        },
-        {
-          heading: "my card3",
-          content: "this is my content"
-        }
-      ]
+      group: [],
     };
   },
   methods: {
@@ -58,13 +47,21 @@ export default {
         // { backstackVisible: false }
       );
     },
-    async getGroup() {
-      this.group = await this.$groupService.getGroups();
-    }
+    getGroup() {
+      this.$groupService
+        .getGroups()
+        .then((groupArray) => {
+          this.group = groupArray;
+          console.log("Supposedly this a group array??, we'll see", this.group);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   created() {
     this.getGroup();
-  }
+  },
 };
 </script>
 
@@ -89,7 +86,7 @@ export default {
 }
 
 .my-button {
-  android-elevation: 4;
+  /* android-elevation: 4; */
   background-color: lightseagreen;
   border-color: darkolivegreen;
   border-radius: 20;
@@ -100,7 +97,7 @@ export default {
 }
 
 .my-button:active {
-  android-elevation: 8;
+  /* android-elevation: 8; */
   background-color: whitesmoke;
   border-color: darkolivegreen;
   border-radius: 20;

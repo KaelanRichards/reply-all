@@ -8,13 +8,13 @@ const state = {
   user: {
     userId: "",
     userEmail: "",
-    groups: [
-      {
-        groupName: "",
-        userCount: "",
-        prompts: [{ promptStatus: "" }],
-      },
-    ],
+    // groups: [
+    //   {
+    //     groupName: "",
+    //     userCount: "",
+    //     prompts: [{ promptStatus: "" }],
+    //   },
+    // ],
     pendingGroupInvites: [],
   },
   groups: {
@@ -62,6 +62,9 @@ const mutations = {
 };
 
 const actions = {
+  setUser({ commit }, user) {
+    commit("setUser", user);
+  },
   fetchCurrentUser({ commit }) {
     firebase.getCurrentUser().then(
       function(user) {
@@ -88,14 +91,6 @@ const actions = {
           prompts: obj[key].prompts,
         }));
         commit("setGroups", groups);
-      });
-  },
-  associateUserToGroup(context, payload) {
-    return firebase
-      .database()
-      .ref("users/" + payload.userId + "/groups/" + payload.groupId)
-      .update({
-        groupName: payload.groupName,
       });
   },
 };

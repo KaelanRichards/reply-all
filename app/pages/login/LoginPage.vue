@@ -62,7 +62,9 @@
         />
         <Label class="login-label sign-up-label" @tap="toggleForm">
           <FormattedString>
-            <Span :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'" />
+            <Span
+              :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'"
+            />
             <Span :text="isLoggingIn ? 'Sign up' : ''" class="bold" />
           </FormattedString>
         </Label>
@@ -83,8 +85,8 @@ export default {
       user: {
         email: "suckme@suck.me",
         password: "boobies",
-        confirmPassword: "boobies"
-      }
+        confirmPassword: "boobies",
+      },
     };
   },
 
@@ -108,8 +110,8 @@ export default {
 
       this.$userService
         .login(this.user)
-        .then(currentUser => {
-          this.$store.dispatch("setUser", currentUser);
+        .then((currentUser) => {
+          this.$store.dispatch("setUser", JSON.parse(currentUser));
           loader.hide();
           this.$navigateTo(
             routes.home
@@ -117,7 +119,7 @@ export default {
             // { backstackVisible: false }
           );
         })
-        .catch(err => {
+        .catch((err) => {
           loader.hide();
           console.log(err);
           this.alert("Unfortunately we could not find your account.");
@@ -135,7 +137,7 @@ export default {
             // { backstackVisible: false }
           );
         })
-        .catch(err => {
+        .catch((err) => {
           //loader.hide();
           console.error(err);
           this.alert(err);
@@ -160,12 +162,12 @@ export default {
       }
       this.$userService
         .register(this.user)
-        .then(user => {
+        .then((user) => {
           this.alert("Your account was successfully created. Welcome!", user);
           this.isLoggingIn = true;
           loader.hide();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           loader.hide();
           this.alert(err);
@@ -179,8 +181,8 @@ export default {
         inputType: "email",
         defaultText: "",
         okButtonText: "Ok",
-        cancelButtonText: "Cancel"
-      }).then(data => {
+        cancelButtonText: "Cancel",
+      }).then((data) => {
         if (data.result) {
           loader.show(global.loaderOptions);
           this.$userService
@@ -210,10 +212,10 @@ export default {
       return alert({
         title: "APP NAME",
         okButtonText: "OK",
-        message: message
+        message: message,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <StackLayout class="home-panel">
     <CardView
-      v-for="group in groupsArray"
+      v-for="group in groups"
       :key="group.id"
       class="card"
       elevation="40"
@@ -9,8 +9,8 @@
       ios:shadowRadius="3"
     >
       <StackLayout class="card-layout">
-        <Label class="h2" :text="group.heading" />
-        <Label class="body" textWrap="true" :text="group.content" />
+        <Label class="h2" :text="group.groupName" />
+        <!-- <Label class="body" textWrap="true" :text="group.content" /> -->
       </StackLayout>
     </CardView>
   </StackLayout>
@@ -19,13 +19,13 @@
 <script>
 export default {
   props: {
-    groups: Array
+    groups: Array,
   },
   data() {
     return {
-      groupsArray: this.groups
+      groupsArray: this.groups,
     };
-  }
+  },
 };
 </script>
 <style scoped>

@@ -3,6 +3,8 @@ import firebase from "nativescript-plugin-firebase";
 import { backendService } from "../main";
 
 export default class UserService extends BackendService {
+  async getUsers() {}
+
   async register(user) {
     // create authentication for user
     const createdUser = await firebase.createUser({
