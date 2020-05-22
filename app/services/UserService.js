@@ -12,12 +12,23 @@ export default class UserService extends BackendService {
       password: user.password,
     });
 
+    const userKeywords = generateKeywords([
+      user.firstName,
+      user.lastName,
+      user.userName,
+    ]);
+
     // create user document in firestore
     await firebase.firestore.set("users", createdUser.uid, {
       // admin: false,
       email: user.email,
       userId: createdUser.uid,
-      // fill these so the orderBy filter of the player dropdown works (it doesn't like undefined values)
+      userName: user.userName,
+      keywords: userKeywords,
+      name: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
     });
 
     const userDoc = await firebase.firestore.getDocument(
@@ -80,4 +91,38 @@ export default class UserService extends BackendService {
     backendService.token = "";
     return firebase.logout();
   }
+  // async createMockUsers() {
+  //   const users = [
+  //  create fake json data and place here
+  //  ]
+  // }
 }
+
+//two below variable generate a list ofkeywords to make it easier to search through
+//https://github.com/iceniveth/firestore-search/tree/master/public
+const createKeywords = (name) => {
+  const arrName = [];
+  let curName = "";
+  name.split("").forEach((letter) => {
+    curName += letter;
+    arrName.push(curName);
+  });
+  return arrName;
+};
+
+const generateKeywords = (names) => {
+  const [first, last, userName] = names;
+  const keywordFullName = createKeywords(`${first} ${last}`);
+  const keywordLastNameFirst = createKeywords(`${last}, ${first}`);
+  const keywordUserNameFullName = createKeywords(
+    `${userName} ${first} ${last}`
+  );
+  return [
+    ...new Set([
+      "",
+      ...keywordFullName,
+      ...keywordLastNameFirst,
+      ...keywordUserNameFullName,
+    ]),
+  ];
+};

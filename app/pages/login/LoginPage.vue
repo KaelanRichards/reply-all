@@ -2,8 +2,12 @@
   <Page actionBarHidden="true" backgroundSpanUnderStatusBar="true">
     <FlexboxLayout class="page">
       <StackLayout class="form">
-        <Image class="logo" src="~/assets/images/NativeScript-Vue.png" />
-        <Label class="header" text="REPLY_ALL" />
+        <Image
+          v-show="isLoggingIn"
+          class="logo"
+          src="~/assets/images/NativeScript-Vue.png"
+        />
+        <Label v-show="isLoggingIn" class="header" text="REPLY_ALL" />
         <StackLayout class="input-field" marginBottom="25">
           <TextField
             class="input"
@@ -12,6 +16,57 @@
             autocorrect="false"
             autocapitalizationType="none"
             v-model="user.email"
+            returnKeyType="next"
+            @returnPress="focusPassword"
+            fontSize="18"
+          />
+          <StackLayout class="hr-light" />
+        </StackLayout>
+        <StackLayout
+          v-show="!isLoggingIn"
+          class="input-field"
+          marginBottom="25"
+        >
+          <TextField
+            class="input"
+            hint="User Name"
+            autocorrect="false"
+            autocapitalizationType="none"
+            v-model="user.userName"
+            returnKeyType="next"
+            @returnPress="focusPassword"
+            fontSize="18"
+          />
+          <StackLayout class="hr-light" />
+        </StackLayout>
+        <StackLayout
+          v-show="!isLoggingIn"
+          class="input-field"
+          marginBottom="25"
+        >
+          <TextField
+            class="input"
+            hint="First Name"
+            autocorrect="false"
+            autocapitalizationType="none"
+            v-model="user.firstName"
+            returnKeyType="next"
+            @returnPress="focusPassword"
+            fontSize="18"
+          />
+          <StackLayout class="hr-light" />
+        </StackLayout>
+        <StackLayout
+          v-show="!isLoggingIn"
+          class="input-field"
+          marginBottom="25"
+        >
+          <TextField
+            class="input"
+            hint="Last Name"
+            autocorrect="false"
+            autocapitalizationType="none"
+            v-model="user.lastName"
             returnKeyType="next"
             @returnPress="focusPassword"
             fontSize="18"
@@ -86,6 +141,9 @@ export default {
         email: "suckme@suck.me",
         password: "boobies",
         confirmPassword: "boobies",
+        userName: "",
+        firstName: "",
+        lastName: "",
       },
     };
   },

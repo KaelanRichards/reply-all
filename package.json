@@ -18,6 +18,7 @@
     "run-iphone": "tns run ios --device 'iPhone 8'"
   },
   "dependencies": {
+    "@nativescript/theme": "^2.3.3",
     "@nstudio/nativescript-cardview": "^1.0.0",
     "@nstudio/nativescript-loading-indicator": "^3.0.4",
     "@vue/devtools": "^5.3.3",

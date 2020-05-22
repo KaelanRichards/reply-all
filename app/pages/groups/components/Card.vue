@@ -7,6 +7,7 @@
       elevation="40"
       radius="10"
       ios:shadowRadius="3"
+      @tap="goToGroupPage"
     >
       <StackLayout class="card-layout">
         <Label class="h2" :text="group.groupName" />
@@ -17,6 +18,8 @@
 </template>
 
 <script>
+import routes from "~/router";
+
 export default {
   props: {
     groups: Array,
@@ -25,6 +28,18 @@ export default {
     return {
       groupsArray: this.groups,
     };
+  },
+  methods: {
+    goToGroupPage() {
+      //navigate to create group page
+      this.$store.dispatch("setPrompts");
+
+      this.$navigateTo(
+        routes.group
+        // { clearHistory: true },
+        // { backstackVisible: false }
+      );
+    },
   },
 };
 </script>

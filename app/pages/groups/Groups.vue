@@ -7,7 +7,6 @@
         <!-- No styles applied -->
         <Button text="Create button" @tap="goToCreateGroup"></Button>
         <Button text="group page" @tap="goToGroupPage"></Button>
-        <Button text="group page" @tap="getGroup"></Button>
 
         <Card :groups="this.group"></Card>
       </StackLayout>

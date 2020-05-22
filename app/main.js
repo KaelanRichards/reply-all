@@ -8,16 +8,12 @@ import store from "./store";
 import BackendService from "./services/BackendService";
 import UserService from "./services/UserService";
 
-import RadDataForm from "nativescript-ui-dataform/vue";
-import RadAutoComplete from "nativescript-ui-autocomplete/vue";
 import GroupService from "./services/GroupService";
 
 export const backendService = new BackendService();
 export const userService = new UserService();
 export const groupService = new GroupService();
 
-Vue.use(RadAutoComplete);
-Vue.use(RadDataForm);
 Vue.registerElement(
   "CardView",
   () => require("@nstudio/nativescript-cardview").CardView
