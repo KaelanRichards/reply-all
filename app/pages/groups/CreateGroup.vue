@@ -9,6 +9,7 @@
         keyboardType="email"
         returnKeyType="next"
         fontSize="18"
+        v-model="groupForm.groupName"
       />
       <Label text="Select Group Members" />
       <TextField
@@ -22,15 +23,15 @@
       <!-- @textChange="debouncedInput" -->
 
       <ScrollView>
-        <ListView
-          for="person in filteredPeople"
-          class="list-group"
-          @itemTap="onItemTap"
-        >
+        <ListView for="person in people" @itemTap="onItemTap" v-show="people">
           <v-template>
             <GridLayout class="list-group-item" rows="*" columns="auto, *">
-              <!-- <Image row="0" col="0" :src="item.src" class="thumb img-circle" /> -->
-              <Label row="0" col="1" :text="person.FirstName" />
+              <Label
+                row="0"
+                col="1"
+                :text="`${person.name.firstName} ${person.name.lastName}`"
+              />
+              <Label marginTop="20" row="1" col="1" :text="person.userName" />
             </GridLayout>
           </v-template>
         </ListView>
@@ -40,6 +41,13 @@
         @tap="createGroup"
         class="btn btn-primary m-t-20"
       />
+      <ListView for="member in groupForm.groupMembers">
+        <v-template>
+          <GridLayout class="list-group-item" rows="*" columns="auto, *">
+            <Label :text="member" />
+          </GridLayout>
+        </v-template>
+      </ListView>
     </StackLayout>
   </Page>
 </template>
@@ -47,6 +55,9 @@
 <script>
 import routes from "~/router";
 import { debounce } from "~/helper";
+import { LoadingIndicator } from "@nstudio/nativescript-loading-indicator";
+
+const loader = new LoadingIndicator();
 
 export default {
   data() {
@@ -57,73 +68,58 @@ export default {
       },
       filterText: null,
       debouncedInput: "",
-      people: [
-        {
-          FirstName: "Kaelan",
-          LastName: "Richards",
-          Email: "kadokaelan@gmail.com",
-        },
-        {
-          FirstName: "Blake",
-          LastName: "Pozolo",
-          Email: "blakep@gmail.com",
-        },
-        {
-          FirstName: "Andrew",
-          LastName: "Han",
-          Email: "A_Han@gmail.com",
-        },
-      ],
+      people: [],
     };
   },
-  computed: {
-    filteredPeople() {
-      // If there is no filter text, just return everyone
-      if (!this.debouncedInput) return this.people;
-      console.log("tehehe", this.people);
-      // Convert the search text to lower case
-      let searchText = this.debouncedInput.toLowerCase();
 
-      // Use the standard javascript filter method of arrays
-      // to return only people whose first name or last name
-      // includes the search text
-      return this.people.filter((p) => {
-        // if IE support is required and not pre-compiling,
-        // use indexOf instead of includes
-        return (
-          p.FirstName.toLowerCase().includes(searchText) ||
-          p.LastName.toLowerCase().includes(searchText)
-        );
-      });
-    },
-  },
   methods: {
     onItemTap: function(event) {
-      console.log("You tapped: " + this.$data.items[event.index].text);
+      this.groupForm.groupMembers.push(this.$data.people[event.index].userId);
+      this.people = [];
+      this.filterText = "";
     },
     createGroup() {
+      loader.show(global.loaderOptions);
       this.$groupService
-        .createGroup(groupForm)
+        .createGroup(this.groupForm)
         .then((group) => {
-          console.log("Supposedly this a group array??, we'll see", group);
-          navigateToGroupHome();
+          loader.hide();
+          this.$navigateTo(
+            routes.home,
+            { clearHistory: true }
+            // { backstackVisible: false }
+          );
         })
         .catch((err) => {
+          loader.hide();
           console.error(err);
         });
     },
-    navigateToGroupHome() {
-      this.$navigateTo(
-        routes.home
-        // { backstackVisible: false }
-      );
+
+    getSearchResults(text) {
+      console.log("IS THIS UNDEFINED", text);
+      loader.show(global.loaderOptions);
+      this.$searchService
+        .searchByName(text)
+        .then((searchresults) => {
+          this.people = searchresults;
+          loader.hide();
+        })
+        .catch((e) => {
+          console.log(e);
+          loader.hide();
+        });
     },
   },
   watch: {
     // https://stackoverflow.com/a/53486112
     filterText: debounce(function(newVal) {
-      console.log("YEeeeeeeeee", newVal);
       this.debouncedInput = newVal;
+      if (!this.debouncedInput) {
+        this.people = [];
+      } else {
+        this.getSearchResults(this.debouncedInput);
+      }
     }, 1000),
   },
 };

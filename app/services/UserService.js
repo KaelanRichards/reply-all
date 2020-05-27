@@ -13,9 +13,9 @@ export default class UserService extends BackendService {
     });
 
     const userKeywords = generateKeywords([
-      user.firstName,
-      user.lastName,
-      user.userName,
+      user.firstName.toLowerCase(),
+      user.lastName.toLowerCase(),
+      user.userName.toLowerCase(),
     ]);
 
     // create user document in firestore

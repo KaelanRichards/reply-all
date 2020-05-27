@@ -9,10 +9,12 @@ import BackendService from "./services/BackendService";
 import UserService from "./services/UserService";
 
 import GroupService from "./services/GroupService";
+import SearchService from "./services/SearchService";
 
 export const backendService = new BackendService();
 export const userService = new UserService();
 export const groupService = new GroupService();
+export const searchService = new SearchService();
 
 Vue.registerElement(
   "CardView",
@@ -22,6 +24,7 @@ Vue.registerElement(
 Vue.prototype.$store = store;
 Vue.prototype.$userService = userService;
 Vue.prototype.$groupService = groupService;
+Vue.prototype.$searchService = searchService;
 // Vue.prototype.$changeRoute = (to, options) => {
 //   Vue.navigateTo(routes[to], options);
 // };

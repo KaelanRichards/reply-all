@@ -30,6 +30,7 @@ export default class GroupService {
     firebase.firestore.collection("groups").add({
       groupName: group.groupName,
       invitedUsers: group.groupMembers,
+      groupUsers: [state.user.uid],
     });
   }
 }
