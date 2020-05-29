@@ -37,6 +37,16 @@ const state = {
       },
     },
   },
+  // prompts that have been completed will be added here
+  Results: {
+    prompt: {
+      promptText: "",
+      promptWinner: {
+        userId: "",
+        imageUrl: "",
+      },
+    },
+  },
   promptVote: {
     promptText: "",
     promptResponses: [
@@ -47,6 +57,9 @@ const state = {
         votes: "",
       },
     ],
+  },
+  selectedGroup: {
+    groupName: "",
   },
 };
 
@@ -59,11 +72,17 @@ const mutations = {
   setGroups: (state, groups) => {
     state.groups = groups;
   },
+  setSelectedGroup: (state, group) => {
+    state.selectedGroup = group;
+  },
 };
 
 const actions = {
   setUser({ commit }, user) {
     commit("setUser", user);
+  },
+  setSelectedGroup({ commit }, group) {
+    commit("setSelectedGroup", group);
   },
   fetchCurrentUser({ commit }) {
     firebase.getCurrentUser().then(

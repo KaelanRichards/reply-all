@@ -24,7 +24,6 @@ export default {
       propVal: this.propsVal,
       columnsVal: this.columns,
       promptNameVal: this.promptName,
-      promptTypeVal: this.promptType,
     };
   },
 

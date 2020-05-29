@@ -6,8 +6,6 @@
         <!-- downloaded a card component package to use but we chillin for now -->
         <!-- No styles applied -->
         <Button text="Create button" @tap="goToCreateGroup"></Button>
-        <Button text="group page" @tap="goToGroupPage"></Button>
-
         <Card :groups="this.group"></Card>
       </StackLayout>
     </ScrollView>

@@ -74,6 +74,7 @@ export default {
 
   methods: {
     onItemTap: function(event) {
+      console.log("event", this.$data.people[event.index].userId);
       this.groupForm.groupMembers.push(this.$data.people[event.index].userId);
       this.people = [];
       this.filterText = "";

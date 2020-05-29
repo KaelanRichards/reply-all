@@ -7,11 +7,11 @@
       elevation="40"
       radius="10"
       ios:shadowRadius="3"
-      @tap="goToGroupPage"
+      @tap="goToGroupPage(group)"
     >
       <StackLayout class="card-layout">
         <Label class="h2" :text="group.groupName" />
-        <!-- <Label class="body" textWrap="true" :text="group.content" /> -->
+        <Label class="body" textWrap="true" :text="group.groupUsers.length" />
       </StackLayout>
     </CardView>
   </StackLayout>
@@ -30,9 +30,10 @@ export default {
     };
   },
   methods: {
-    goToGroupPage() {
+    goToGroupPage(group) {
       //navigate to create group page
-      this.$store.dispatch("setPrompts");
+      // this.$store.dispatch("setPrompts");
+      this.$store.dispatch("setSelectedGroup", group);
 
       this.$navigateTo(
         routes.group

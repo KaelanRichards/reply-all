@@ -12,25 +12,54 @@ const state = store.state;
 
 export default class GroupService {
   async getGroups() {
-    console.log("User ID", state.user.uid);
     let groups = [];
 
-    const userGroupsSnapShot = await firebase.firestore
-      .collection("groups")
-      .where("groupUsers", "array-contains", state.user.uid)
-      .get();
+    try {
+      const userGroupsSnapShot = await firebase.firestore
+        .collection("groups")
+        .where("groupUsers", "array-contains", state.user.uid)
+        .get();
 
-    userGroupsSnapShot.forEach((doc) => groups.push(doc.data()));
+      userGroupsSnapShot.forEach((doc) => {
+        let docData = doc.data();
+        docData.id = doc.id;
+        console.log("this the doc", docData);
+        groups.push(docData);
+      });
 
-    console.log("Group Documents", groups);
-    return groups;
+      return Promise.resolve(groups);
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
   async createGroup(group) {
-    // Add a new document with a generated id.
-    firebase.firestore.collection("groups").add({
-      groupName: group.groupName,
-      invitedUsers: group.groupMembers,
-      groupUsers: [state.user.uid],
-    });
+    try {
+      // Add a new document with a generated id.
+      firebase.firestore.collection("groups").add({
+        groupName: group.groupName,
+        invitedUsers: group.groupMembers,
+        groupUsers: [state.user.uid],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createPrompt(prompt) {
+    try {
+      // Add a new document with a generated id.
+      firebase.firestore
+        .collection("groups")
+        .doc(state.selectedGroup.id)
+        .update({
+          activePrompts: firebase.firestore.FieldValue.arrayUnion({
+            isResponding: true,
+            isVoting: false,
+            promptText: prompt.promptText,
+          }),
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
