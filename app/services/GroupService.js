@@ -44,22 +44,4 @@ export default class GroupService {
       console.log(error);
     }
   }
-
-  async createPrompt(prompt) {
-    try {
-      // Add a new document with a generated id.
-      firebase.firestore
-        .collection("groups")
-        .doc(state.selectedGroup.id)
-        .update({
-          activePrompts: firebase.firestore.FieldValue.arrayUnion({
-            isResponding: true,
-            isVoting: false,
-            promptText: prompt.promptText,
-          }),
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  }
 }

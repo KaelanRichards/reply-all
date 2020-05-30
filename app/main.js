@@ -7,27 +7,29 @@ import store from "./store";
 
 import BackendService from "./services/BackendService";
 import UserService from "./services/UserService";
-
 import GroupService from "./services/GroupService";
 import SearchService from "./services/SearchService";
+import PromptService from "./services/PromptService";
 
 export const backendService = new BackendService();
 export const userService = new UserService();
 export const groupService = new GroupService();
 export const searchService = new SearchService();
-
-Vue.registerElement(
-  "CardView",
-  () => require("@nstudio/nativescript-cardview").CardView
-);
+export const promptService = new PromptService();
 
 Vue.prototype.$store = store;
 Vue.prototype.$userService = userService;
 Vue.prototype.$groupService = groupService;
 Vue.prototype.$searchService = searchService;
+Vue.prototype.$promptService = promptService;
 // Vue.prototype.$changeRoute = (to, options) => {
 //   Vue.navigateTo(routes[to], options);
 // };
+
+Vue.registerElement(
+  "CardView",
+  () => require("@nstudio/nativescript-cardview").CardView
+);
 
 if (TNS_ENV !== "production") {
   Vue.use(VueDevtools);

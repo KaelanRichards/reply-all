@@ -2,12 +2,11 @@ https://www.nativescript.org/blog/building-a-simple-progressbar-for-your-natives
 
 <template>
   <StackLayout @tap="goToPage">
-    <Label :text="promptNameVal" class="progressbar-text"></Label>
-
     <GridLayout :columns="columnsVal" class="progressbar">
-      <StackLayout col="0" class="progressbar-value">
-      </StackLayout> </GridLayout
-  ></StackLayout>
+      <StackLayout col="0" class="progressbar-value"> </StackLayout>
+      <Label :text="promptNameVal" class="progressbar-text"></Label>
+    </GridLayout>
+  </StackLayout>
 </template>
 
 <script>
@@ -52,11 +51,11 @@ export default {
   border-radius: 10;
   border-color: black;
   border-width: 1;
+  text-align: center;
 }
 .progressbar-value {
-  background: #337ab7;
+  background: #d3d3d3;
 }
 .progressbar-text {
-  text-align: center;
 }
 </style>

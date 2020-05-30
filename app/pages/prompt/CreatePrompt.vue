@@ -11,10 +11,23 @@
         fontSize="18"
         v-model="prompt.promptText"
       />
+      <Button
+        v-for="prompt in randomPrompts"
+        :key="prompt.id"
+        :text="prompt.promptText"
+        @tap="createPrompt(prompt)"
+        class="btn btn-primary m-t-20"
+      />
 
       <Button
-        :text="'Create prompt'"
-        @tap="createPrompt"
+        :text="'Random'"
+        @tap="shufflePrompts"
+        class="btn btn-primary m-t-20"
+      />
+
+      <Button
+        :text="'Done'"
+        @tap="createPrompt(prompt)"
         class="btn btn-primary m-t-20"
       />
     </StackLayout>
@@ -33,19 +46,19 @@ export default {
       prompt: {
         promptText: "",
       },
+      randomPrompts: [],
     };
   },
-
   methods: {
-    createPrompt() {
+    createPrompt(prompt) {
       loader.show(global.loaderOptions);
-      this.$groupService
-        .createPrompt(this.prompt)
+      this.$promptService
+        .createPrompt(prompt)
         .then(() => {
           loader.hide();
           this.$navigateTo(
-            routes.home,
-            { clearHistory: true }
+            routes.home
+            // { clearHistory: true }
             // { backstackVisible: false }
           );
         })
@@ -54,6 +67,20 @@ export default {
           console.error(err);
         });
     },
+    shufflePrompts() {
+      const prompts = this.$store.state.prompts;
+      console.log("----------prompts--------", prompts);
+      let randomPrompts = [];
+      const prompt1 = prompts[Math.floor(Math.random() * prompts.length)];
+      const prompt2 = prompts[Math.floor(Math.random() * prompts.length)];
+      const prompt3 = prompts[Math.floor(Math.random() * prompts.length)];
+      randomPrompts.push(prompt1, prompt2, prompt3);
+      console.log("-----------rando prompts--------", randomPrompts);
+      this.randomPrompts = randomPrompts;
+    },
+  },
+  created() {
+    this.shufflePrompts();
   },
 };
 </script>

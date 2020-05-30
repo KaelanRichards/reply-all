@@ -61,28 +61,41 @@ const state = {
   selectedGroup: {
     groupName: "",
   },
+  prompts: {},
 };
 
 const getters = {};
 
 const mutations = {
-  setUser: (state, user) => {
+  SET_USERS: (state, user) => {
     state.user = user;
   },
   setGroups: (state, groups) => {
     state.groups = groups;
   },
-  setSelectedGroup: (state, group) => {
+  SET_SELECTED_GROUP: (state, group) => {
     state.selectedGroup = group;
+  },
+  SET_PROMPTS: (state, prompts) => {
+    state.prompts = prompts;
+  },
+  ADD_PROMPT: (state, prompt) => {
+    state.prompts.push(prompt);
   },
 };
 
 const actions = {
   setUser({ commit }, user) {
-    commit("setUser", user);
+    commit("SET_USERS", user);
   },
   setSelectedGroup({ commit }, group) {
-    commit("setSelectedGroup", group);
+    commit("SET_SELECTED_GROUP", group);
+  },
+  setPrompts({ commit }, prompts) {
+    commit("SET_PROMPTS", prompts);
+  },
+  addPrompt({ commit }, prompts) {
+    commit("ADD_PROMPT", prompt);
   },
   fetchCurrentUser({ commit }) {
     firebase.getCurrentUser().then(

@@ -58,6 +58,14 @@ export default {
   },
   created() {
     this.getGroup();
+    this.$promptService
+      .getRandomPrompts()
+      .then((randomPrompts) => {
+        this.$store.dispatch("setPrompts", randomPrompts);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
 };
 </script>

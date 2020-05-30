@@ -6,18 +6,18 @@
 
       <label text="Respond"></label>
       <ProgressPrompt
-        v-for="vote in votePrompts"
-        :key="vote.id"
+        v-for="response in responsePrompts"
+        :key="response.id"
         :columns="60"
-        :promptName="vote.promptText"
+        :promptName="response.promptText"
         promptType="respond"
       ></ProgressPrompt>
       <label text="Vote"></label>
       <ProgressPrompt
-        v-for="response in responsePrompts"
-        :key="response.id"
+        v-for="vote in votePrompts"
+        :key="vote.id"
         :columns="75"
-        :promptName="response.promptText"
+        :promptName="vote.promptText"
         promptType="vote"
       ></ProgressPrompt>
     </StackLayout>
