@@ -10,6 +10,7 @@
         :key="response.id"
         :columns="60"
         :promptName="response.promptText"
+        :promptId="response.id"
         promptType="respond"
       ></ProgressPrompt>
       <label text="Vote"></label>
@@ -18,6 +19,7 @@
         :key="vote.id"
         :columns="75"
         :promptName="vote.promptText"
+        :promptId="vote.id"
         promptType="vote"
       ></ProgressPrompt>
     </StackLayout>
@@ -36,6 +38,7 @@ export default {
     return {
       progess: 30,
       promptName: "You mom is FAT!!!!",
+      promptId: "",
       promptType: {
         vote: "vote",
         respond: "respond",

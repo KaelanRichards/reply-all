@@ -17,6 +17,7 @@ export default {
     columns: Number,
     promptName: String,
     promptType: String,
+    promptId: String,
   },
   data() {
     return {
@@ -31,10 +32,32 @@ export default {
       this.columns = percent + "*," + (100 - percent) + "*";
     },
     goToPage() {
+      let prompt = {
+        promptName: this.promptName,
+        promptId: this.promptId,
+      };
       if (this.promptType === "vote") {
-        this.$navigateTo(routes.vote);
+        this.$navigateTo(routes.vote, {
+          animated: true,
+          transition: {
+            name: "slideLeft",
+            curve: "easeInOut",
+            duration: 100,
+          },
+          props: { prompt: prompt },
+        });
       } else if (this.promptType === "respond") {
-        this.$navigateTo(routes.respond);
+        console.log("HEEEEEEEERRRREEEE", prompt);
+
+        this.$navigateTo(routes.respond, {
+          animated: true,
+          transition: {
+            name: "slideLeft",
+            curve: "easeInOut",
+            duration: 100,
+          },
+          props: { prompt: prompt },
+        });
       }
     },
   },

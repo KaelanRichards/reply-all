@@ -12,40 +12,91 @@ const state = store.state;
 
 export default class PromptService {
   async createPrompt(prompt) {
+    const id = new Date().getTime();
     try {
       // Add a new document with a generated id.
-      firebase.firestore
+      await firebase.firestore
         .collection("groups")
         .doc(state.selectedGroup.id)
         .update({
           activePrompts: firebase.firestore.FieldValue.arrayUnion({
+            id: id,
             isResponding: true,
             isVoting: false,
             promptText: prompt.promptText,
           }),
         })
-        .then((prompt) => {
-          store.dispatch("addPrompt", prompt);
+        .then((payload) => {
+          const docId = String(id);
+          store.dispatch("addPrompt", payload);
+          firebase.firestore
+            .collection("prompts")
+            .doc(docId)
+            .set({
+              promptText: prompt.promptText,
+              userImages: [],
+            });
+        })
+        .catch((e) => {
+          console.log(e);
         });
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getRandomPrompts() {
+  async addImage(downloadUrl, userId, docId) {
+    try {
+      const docIdString = String(docId);
+      await firebase.firestore
+        .collection("prompts")
+        .doc(docIdString)
+        .update({
+          userImages: firebase.firestore.FieldValue.arrayUnion({
+            userId: userId,
+            imageUrl: downloadUrl,
+          }),
+        })
+        .then((prompt) => {});
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async userVoted() {}
+
+  // Still needs work
+  async userSubmitted(userId, promptId) {
+    try {
+      const docIdString = String(docId);
+      await firebase.firestore
+        .collection("groups")
+        .doc(state.selectedGroup.id)
+        .update({
+          activePrompts: firebase.firestore.FieldValue.arrayUnion({
+            id: id,
+            isResponding: true,
+            isVoting: false,
+            promptText: prompt.promptText,
+          }),
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getAllPrompts() {
     let prompts = [];
     try {
       const promptSnapshot = await firebase.firestore
-        .collection("prompts")
+        .collection("preparedPrompts")
         .get();
       promptSnapshot.forEach((doc) => {
         let docData = doc.data();
         docData.id = doc.id;
-        console.log("this the doc", docData);
         prompts.push(docData);
       });
 
-      console.log("this is the prompts", prompts);
       return Promise.resolve(prompts);
     } catch (error) {
       console.log(error);

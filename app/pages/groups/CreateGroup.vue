@@ -121,7 +121,7 @@ export default {
       } else {
         this.getSearchResults(this.debouncedInput);
       }
-    }, 1000),
+    }, 500),
   },
 };
 </script>

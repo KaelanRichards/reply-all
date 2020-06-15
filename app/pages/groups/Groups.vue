@@ -59,7 +59,7 @@ export default {
   created() {
     this.getGroup();
     this.$promptService
-      .getRandomPrompts()
+      .getAllPrompts()
       .then((randomPrompts) => {
         this.$store.dispatch("setPrompts", randomPrompts);
       })

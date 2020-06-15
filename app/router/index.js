@@ -5,6 +5,7 @@ import CreatePrompt from "~/pages/prompt/CreatePrompt";
 import Group from "~/pages/groups/Group";
 import Vote from "~/pages/prompt/PromptVote";
 import Respond from "~/pages/prompt/PromptRespond";
+import Respondv2 from "~/pages/prompt/PromptRespondv2";
 
 const routes = {
   home: Groups,
@@ -13,7 +14,8 @@ const routes = {
   createGroup: CreateGroup,
   createPrompt: CreatePrompt,
   vote: Vote,
-  respond: Respond,
+  respond: Respondv2,
+  test: Respondv2,
 };
 
 export default routes;

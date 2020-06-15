@@ -10,18 +10,21 @@ import UserService from "./services/UserService";
 import GroupService from "./services/GroupService";
 import SearchService from "./services/SearchService";
 import PromptService from "./services/PromptService";
+import ImageService from "./services/ImageService";
 
 export const backendService = new BackendService();
 export const userService = new UserService();
 export const groupService = new GroupService();
 export const searchService = new SearchService();
 export const promptService = new PromptService();
+export const imageService = new ImageService();
 
 Vue.prototype.$store = store;
 Vue.prototype.$userService = userService;
 Vue.prototype.$groupService = groupService;
 Vue.prototype.$searchService = searchService;
 Vue.prototype.$promptService = promptService;
+Vue.prototype.$imageService = imageService;
 // Vue.prototype.$changeRoute = (to, options) => {
 //   Vue.navigateTo(routes[to], options);
 // };
@@ -56,6 +59,8 @@ global.loaderOptions = {
 
 firebase
   .init({
+    storageBucket: "gs://project-ligmuh.appspot.com/",
+
     // Listens for authentication state changes
     // onAuthStateChanged: (user) => {
     //   // optional

@@ -23,7 +23,6 @@ export default class GroupService {
       userGroupsSnapShot.forEach((doc) => {
         let docData = doc.data();
         docData.id = doc.id;
-        console.log("this the doc", docData);
         groups.push(docData);
       });
 
