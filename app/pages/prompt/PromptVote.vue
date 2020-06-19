@@ -3,42 +3,9 @@
     <label text="vote for predro!!"> </label>
     <WrapLayout alignItems="left" backgroundColor="#eeeeee" marginTop="10">
       <Image
-        src="~/assets/images/NativeScript-Vue.png"
-        stretch="aspectFill"
-        class="listImage"
-        width="33.3%"
-        height="140"
-      />
-      <Image
-        src="~/assets/images/NativeScript-Vue.png"
-        stretch="aspectFill"
-        class="listImage"
-        width="33.3%"
-        height="140"
-      />
-      <Image
-        src="~/assets/images/NativeScript-Vue.png"
-        stretch="aspectFill"
-        class="listImage"
-        width="33.3%"
-        height="140"
-      />
-      <Image
-        src="~/assets/images/NativeScript-Vue.png"
-        stretch="aspectFill"
-        class="listImage"
-        width="33.3%"
-        height="140"
-      />
-      <Image
-        src="~/assets/images/NativeScript-Vue.png"
-        stretch="aspectFill"
-        class="listImage"
-        width="33.3%"
-        height="140"
-      />
-      <Image
-        src="~/assets/images/NativeScript-Vue.png"
+        v-for="image in images"
+        :key="image.id"
+        :src="image.imageUrl"
         stretch="aspectFill"
         class="listImage"
         width="33.3%"
@@ -49,7 +16,35 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "prompt-vote",
+
+  props: {
+    prompt: {
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      images: [],
+    };
+  },
+  methods: {
+    getImages() {
+      this.$promptService
+        .getPromptImages(this.prompt.promptId)
+        .then((imageArray) => {
+          this.images = imageArray;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
+  created() {
+    this.getImages();
+  },
+};
 </script>
 
 <style></style>
