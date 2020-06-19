@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import routes from "~/router";
+
 export default {
   name: "image-details-page",
   data() {
@@ -68,50 +70,23 @@ export default {
                 this.$store.state.user.uid,
                 this.navObject.promptId
               );
+              this.$promptService
+                .userResponded(
+                  this.$store.state.user.uid,
+                  this.navObject.promptId
+                )
+                .then(() => {
+                  this.$navigateTo(
+                    routes.home,
+                    { clearHistory: true }
+                    // { backstackVisible: false }
+                  );
+                });
             });
-          this.$navigateBack();
         })
         .catch((err) => {
           console.error(err);
         });
-    },
-    submitPicture(id) {
-      if (this.image) {
-        //upload the file, then save all
-        this.firebaseService.uploadFile(this.imagePath).then(
-          (uploadedFile) => {
-            this.uploadedImageName = uploadedFile.name;
-            //get downloadURL and store it as a full path;
-            this.firebaseService
-              .getDownloadUrl(this.uploadedImageName)
-              .then((downloadUrl) => {
-                this.firebaseService
-                  .editGift(id, this.description, downloadUrl)
-                  .then(
-                    (result) => {
-                      alert(result);
-                    },
-                    (error) => {
-                      alert(error);
-                    }
-                  );
-              });
-          },
-          (error) => {
-            alert("File upload error: " + error);
-          }
-        );
-      } else {
-        //just edit the description
-        this.firebaseService.editDescription(id, this.description).then(
-          (result) => {
-            alert(result);
-          },
-          (error) => {
-            alert(error);
-          }
-        );
-      }
     },
   },
 };

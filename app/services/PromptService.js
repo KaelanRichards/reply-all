@@ -45,6 +45,27 @@ export default class PromptService {
     }
   }
 
+  async getPromptImages(promptId) {
+    let images = [];
+    const id = String(promptId);
+    try {
+      const userGroupsSnapShot = await firebase.firestore
+        .collection("prompts")
+        .doc(id)
+        .get();
+
+      userGroupsSnapShot.forEach((doc) => {
+        let docData = doc.data();
+        docData.id = doc.id;
+        images.push(docData.userImages);
+      });
+
+      return Promise.resolve(groups);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   async addImage(downloadUrl, userId, docId) {
     try {
       const docIdString = String(docId);
@@ -66,18 +87,16 @@ export default class PromptService {
   async userVoted() {}
 
   // Still needs work
-  async userSubmitted(userId, promptId) {
+  async groupResponded(userId, promptId) {
     try {
-      const docIdString = String(docId);
+      const docIdString = String(promptId);
       await firebase.firestore
         .collection("groups")
         .doc(state.selectedGroup.id)
         .update({
           activePrompts: firebase.firestore.FieldValue.arrayUnion({
-            id: id,
-            isResponding: true,
-            isVoting: false,
-            promptText: prompt.promptText,
+            isResponding: false,
+            isVoting: true,
           }),
         });
     } catch (error) {
@@ -85,7 +104,21 @@ export default class PromptService {
     }
   }
 
-  async getAllPrompts() {
+  async userResponded(userId, promptId) {
+    try {
+      const docIdString = String(promptId);
+      await firebase.firestore
+        .collection("prompts")
+        .doc(docIdString)
+        .update({
+          usersResponded: firebase.firestore.FieldValue.arrayUnion(userId),
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getAllPremadePrompts() {
     let prompts = [];
     try {
       const promptSnapshot = await firebase.firestore

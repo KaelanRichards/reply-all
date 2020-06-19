@@ -138,8 +138,8 @@ export default {
     return {
       isLoggingIn: true,
       user: {
-        email: "suckme@suck.me",
-        password: "boobies",
+        email: "blake@gmail.com",
+        password: "testtest",
         confirmPassword: "boobies",
         userName: "",
         firstName: "",
@@ -273,6 +273,16 @@ export default {
         message: message,
       });
     },
+  },
+  created() {
+    this.$promptService
+      .getAllPremadePrompts()
+      .then((prompts) => {
+        this.$store.dispatch("setPrompts", prompts);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
 };
 </script>

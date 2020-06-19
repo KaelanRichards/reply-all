@@ -12,13 +12,17 @@ export default class UserService extends BackendService {
       password: user.password,
     });
 
+    await firebase.updateProfile({
+      displayName: user.userName,
+    });
+
     const userKeywords = generateKeywords([
       user.firstName.toLowerCase(),
       user.lastName.toLowerCase(),
       user.userName.toLowerCase(),
     ]);
 
-    // create user document in firestore
+    // create user document in firestores
     await firebase.firestore.set("users", createdUser.uid, {
       // admin: false,
       email: user.email,

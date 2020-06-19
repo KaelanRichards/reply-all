@@ -47,8 +47,6 @@ export default {
           props: { prompt: prompt },
         });
       } else if (this.promptType === "respond") {
-        console.log("HEEEEEEEERRRREEEE", prompt);
-
         this.$navigateTo(routes.respond, {
           animated: true,
           transition: {

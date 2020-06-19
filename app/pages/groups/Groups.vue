@@ -6,7 +6,9 @@
         <!-- downloaded a card component package to use but we chillin for now -->
         <!-- No styles applied -->
         <Button text="Create button" @tap="goToCreateGroup"></Button>
+        <Button text="check invites" @tap="goToInvites"></Button>
         <Card :groups="this.group"></Card>
+        <Button text="log out" @tap="logOut"></Button>
       </StackLayout>
     </ScrollView>
   </Page>
@@ -28,6 +30,15 @@ export default {
     };
   },
   methods: {
+    logOut() {
+      this.$userService.logout().then(() => {
+        this.$navigateTo(
+          routes.login,
+          { clearHistory: true }
+          // { backstackVisible: false }
+        );
+      });
+    },
     goToCreateGroup() {
       //navigate to create group page
       this.$navigateTo(
@@ -35,6 +46,15 @@ export default {
         // { clearHistory: true },
         // { backstackVisible: false }
       );
+    },
+    goToInvites() {
+      //navigate to create group page
+      this.$navigateTo(
+        routes.invites
+        // { clearHistory: true },
+        // { backstackVisible: false }
+      );
+      console.log("NAVIGATING TO INVITESß");
     },
     goToGroupPage() {
       //navigate to create group page
@@ -49,7 +69,6 @@ export default {
         .getGroups()
         .then((groupArray) => {
           this.group = groupArray;
-          console.log("Supposedly this a group array??, we'll see", this.group);
         })
         .catch((err) => {
           console.error(err);
@@ -58,14 +77,6 @@ export default {
   },
   created() {
     this.getGroup();
-    this.$promptService
-      .getAllPrompts()
-      .then((randomPrompts) => {
-        this.$store.dispatch("setPrompts", randomPrompts);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   },
 };
 </script>
