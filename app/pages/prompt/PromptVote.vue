@@ -1,7 +1,7 @@
 <template>
   <page>
     <label text="vote for predro!!"> </label>
-    <WrapLayout alignItems="left" backgroundColor="#eeeeee" marginTop="10">
+    <WrapLayout alignItems="left" marginTop="10">
       <Image
         v-for="image in images"
         :key="image.id"
@@ -35,6 +35,7 @@ export default {
         .getPromptImages(this.prompt.promptId)
         .then((imageArray) => {
           this.images = imageArray;
+          console.log("imageARRAY--------", this.images);
         })
         .catch((err) => {
           console.error(err);

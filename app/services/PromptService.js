@@ -46,21 +46,16 @@ export default class PromptService {
   }
 
   async getPromptImages(promptId) {
-    let images = [];
     const id = String(promptId);
     try {
-      const userGroupsSnapShot = await firebase.firestore
+      const promptSnapshot = await firebase.firestore
         .collection("prompts")
         .doc(id)
         .get();
 
-      userGroupsSnapShot.forEach((doc) => {
-        let docData = doc.data();
-        docData.id = doc.id;
-        images.push(docData.userImages);
-      });
+      const imageArray = promptSnapshot.data().userImages;
 
-      return Promise.resolve(groups);
+      return Promise.resolve(imageArray);
     } catch (error) {
       return Promise.reject(error);
     }

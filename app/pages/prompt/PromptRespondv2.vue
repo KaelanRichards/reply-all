@@ -78,7 +78,6 @@ export default {
                 promptName: this.prompt.promptName,
                 promptId: this.prompt.promptId,
               };
-              console.log("HEEEEEEEERRRREEEE", navObject);
               this.$navigateTo(ImageDetails, {
                 animated: true,
                 transition: {
