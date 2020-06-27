@@ -9,6 +9,7 @@
         <Label :text="invite.groupName" />
         <Label :text="invite.groupCreator" />
         <Button text="accept" @tap="acceptInvite(invite.id)"></Button>
+        <Button text="decline" @tap="acceptInvite(invite.id)"></Button>
       </FlexboxLayout>
     </StackLayout>
   </Page>
@@ -18,9 +19,16 @@
 import routes from "~/router";
 
 export default {
+  name: "prompt-respond",
+
+  props: {
+    groupInvites: {
+      type: Array,
+    },
+  },
   data() {
     return {
-      groupInvites: [],
+      // groupInvites: [],
     };
   },
   methods: {
@@ -47,22 +55,34 @@ export default {
           console.error(err);
         });
     },
-    getInvites() {
+    declineInvite(groupId) {
       this.$groupService
-        .getInvites()
-        .then((invites) => {
-          this.groupInvites = invites;
-          console.log("LALALALALALLALA___________", this.groupInvites);
+        .declineInvite(groupId)
+        .then(() => {
+          this.$navigateTo(
+            routes.home
+            // { clearHistory: true },
+            // { backstackVisible: false }
+          );
         })
         .catch((err) => {
           console.error(err);
         });
     },
+    // getInvites() {
+    //   this.$groupService
+    //     .getInvites()
+    //     .then((invites) => {
+    //       this.groupInvites = invites;
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // },
   },
-  created() {
-    this.getInvites();
-    console.log("PENDING INVITES", this.groupInvites);
-  },
+  // created() {
+  //   this.getInvites();
+  // },
 };
 </script>
 <style scoped>

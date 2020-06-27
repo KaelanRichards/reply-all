@@ -82,17 +82,31 @@ export default class PromptService {
   async userVoted() {}
 
   // Still needs work
-  async groupResponded(userId, promptId) {
+  async groupResponded(promptId) {
     try {
       const docIdString = String(promptId);
+      const groupSnapshot = await firebase.firestore
+        .collection("groups")
+        .doc(state.selectedGroup.id)
+        .get();
+
+      let prompts = groupSnapshot.data().activePrompts;
+
+      const promptIndex = prompts.findIndex((prompt) => prompt.id == promptId);
+
+      prompts[promptIndex].isResponding = false;
+      prompts[promptIndex].isResponding = true;
+
+      let updatedPrompt = prompts[promptIndex];
+
       await firebase.firestore
         .collection("groups")
         .doc(state.selectedGroup.id)
         .update({
-          activePrompts: firebase.firestore.FieldValue.arrayUnion({
-            isResponding: false,
-            isVoting: true,
-          }),
+          activePrompts: firebase.firestore.FieldValue.arrayRemove(docIdString),
+          activePrompts: firebase.firestore.FieldValue.arrayUnion(
+            updatedPrompt
+          ),
         });
     } catch (error) {
       console.log(error);
@@ -108,6 +122,15 @@ export default class PromptService {
         .update({
           usersResponded: firebase.firestore.FieldValue.arrayUnion(userId),
         });
+
+      const promptSnapshot = await firebase.firestore
+        .collection("prompts")
+        .doc(docIdString)
+        .get();
+
+      const usersResponded = promptSnapshot.data().usersResponded;
+
+      return Promise.resolve(usersResponded);
     } catch (error) {
       console.log(error);
     }

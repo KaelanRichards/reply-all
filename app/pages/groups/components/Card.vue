@@ -9,7 +9,7 @@
       ios:shadowRadius="3"
       @tap="goToGroupPage(group)"
     >
-      <StackLayout class="card-layout">
+      <StackLayout v-if="group.isActive === true" class="card-layout">
         <Label class="h2" :text="group.groupName" />
         <Label class="body" textWrap="true" :text="group.groupUsers.length" />
       </StackLayout>

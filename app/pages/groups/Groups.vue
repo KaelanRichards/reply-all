@@ -6,7 +6,11 @@
         <!-- downloaded a card component package to use but we chillin for now -->
         <!-- No styles applied -->
         <Button text="Create button" @tap="goToCreateGroup"></Button>
-        <Button text="check invites" @tap="goToInvites"></Button>
+        <Button
+          v-if="groupInvites.length != 0"
+          :text="`check invites ${groupInvites.length}`"
+          @tap="goToInvites"
+        ></Button>
         <Card :groups="this.group"></Card>
         <Button text="log out" @tap="logOut"></Button>
       </StackLayout>
@@ -27,6 +31,7 @@ export default {
   data() {
     return {
       group: [],
+      groupInvites: [],
     };
   },
   methods: {
@@ -48,13 +53,15 @@ export default {
       );
     },
     goToInvites() {
-      //navigate to create group page
-      this.$navigateTo(
-        routes.invites
-        // { clearHistory: true },
-        // { backstackVisible: false }
-      );
-      console.log("NAVIGATING TO INVITESß");
+      this.$navigateTo(routes.invites, {
+        animated: true,
+        transition: {
+          name: "slideLeft",
+          curve: "easeInOut",
+          duration: 100,
+        },
+        props: { groupInvites: this.groupInvites },
+      });
     },
     goToGroupPage() {
       //navigate to create group page
@@ -74,9 +81,20 @@ export default {
           console.error(err);
         });
     },
+    getInvites() {
+      this.$groupService
+        .getInvites()
+        .then((invites) => {
+          this.groupInvites = invites;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   created() {
     this.getGroup();
+    this.getInvites();
   },
 };
 </script>

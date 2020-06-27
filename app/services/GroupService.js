@@ -31,6 +31,22 @@ export default class GroupService {
       return Promise.reject(error);
     }
   }
+
+  async createGroup(group) {
+    try {
+      // Add a new document with a generated id.
+      await firebase.firestore.collection("groups").add({
+        groupName: group.groupName,
+        invitedUsers: group.groupMembers,
+        groupUsers: [state.user.uid],
+        isActive: false,
+        groupCreator: state.user.displayName,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getInvites() {
     let invites = [];
 
@@ -52,6 +68,19 @@ export default class GroupService {
     }
   }
 
+  async makeGroupActive(groupIdString) {
+    try {
+      await firebase.firestore
+        .collection("groups")
+        .doc(groupIdString)
+        .update({
+          isActive: true,
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async acceptInvite(groupId) {
     const groupIdString = String(groupId);
     const userIdString = String(state.user.uid);
@@ -63,6 +92,11 @@ export default class GroupService {
           invitedUsers: firebase.firestore.FieldValue.arrayRemove(userIdString),
           groupUsers: firebase.firestore.FieldValue.arrayUnion(userIdString),
         });
+      await this.getInvitedUsers(groupIdString).then((users) => {
+        if (users.length === 0) {
+          this.makeGroupActive(groupIdString);
+        }
+      });
     } catch (e) {
       console.log(e);
     }
@@ -85,27 +119,30 @@ export default class GroupService {
         .update({
           invitedUsers: FieldValue.arrayRemove(userIdString),
         });
+
+      await this.getInvitedUsers(groupIdString).then((users) => {
+        if (users.length === 0) {
+          this.makeGroupActive(groupIdString);
+        }
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  async createGroup(group) {
+  async getInvitedUsers(groupIdString) {
     try {
-      // Add a new document with a generated id.
-      await firebase.firestore.collection("groups").add({
-        groupName: group.groupName,
-        invitedUsers: group.groupMembers,
-        groupUsers: [state.user.uid],
-        // groupCreator: {
-        //   firstName: state.user.firstName,
-        //   LastName: state.user.lastName,
-        //   userName: state.user.userName,
-        // },
-        groupCreator: state.user.displayName,
-      });
-    } catch (error) {
-      console.log(error);
+      const groupSnapshot = await firebase.firestore
+        .collection("groups")
+        .doc(groupIdString)
+        .get();
+
+      const invitedUsers = groupSnapshot.data().invitedUsers;
+
+      return Promise.resolve(invitedUsers);
+    } catch (e) {
+      console.log(e);
+      return Promise.reject(e);
     }
   }
 }

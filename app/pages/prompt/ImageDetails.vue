@@ -75,12 +75,18 @@ export default {
                   this.$store.state.user.uid,
                   this.navObject.promptId
                 )
-                .then(() => {
-                  this.$navigateTo(
-                    routes.home,
-                    { clearHistory: true }
-                    // { backstackVisible: false }
-                  );
+                .then((usersResponded) => {
+                  const groupUsers = this.$store.state.selectedGroup.groupUsers;
+                  // check if all of the users have voted
+                  if (groupsUsers.length === usersResponded.Length) {
+                    this.$promptService.groupResponded(this.navObject.promptId);
+                  } else {
+                    this.$navigateTo(
+                      routes.home,
+                      { clearHistory: true }
+                      // { backstackVisible: false }
+                    );
+                  }
                 });
             });
         })
