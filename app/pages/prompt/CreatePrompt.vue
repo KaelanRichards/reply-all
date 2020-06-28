@@ -69,13 +69,9 @@ export default {
     },
     shufflePrompts() {
       const prompts = this.$store.state.prompts;
-      console.log("----------prompts--------", prompts);
       let randomPrompts = [];
       const prompt1 = prompts[Math.floor(Math.random() * prompts.length)];
-      const prompt2 = prompts[Math.floor(Math.random() * prompts.length)];
-      const prompt3 = prompts[Math.floor(Math.random() * prompts.length)];
-      randomPrompts.push(prompt1, prompt2, prompt3);
-      console.log("-----------rando prompts--------", randomPrompts);
+      randomPrompts.push(prompt1);
       this.randomPrompts = randomPrompts;
     },
   },

@@ -11,13 +11,18 @@ const state = store.state;
 // which are: '<' | '<=' | '==' | '>=' | '>' | 'in' | 'array-contains' | 'array-contains-an
 
 export default class PromptService {
-  async createPrompt(prompt) {
+  async createPrompt(prompt, groupId = "") {
     const id = new Date().getTime();
+
+    // depending on where this gets called it will be passed a groupId
+    if (groupId === "") {
+      groupId = state.selectedGroup.id;
+    }
     try {
       // Add a new document with a generated id.
       await firebase.firestore
         .collection("groups")
-        .doc(state.selectedGroup.id)
+        .doc(groupId)
         .update({
           activePrompts: firebase.firestore.FieldValue.arrayUnion({
             id: id,
@@ -81,7 +86,6 @@ export default class PromptService {
 
   async userVoted() {}
 
-  // Still needs work
   async groupResponded(promptId) {
     try {
       const docIdString = String(promptId);
@@ -95,18 +99,16 @@ export default class PromptService {
       const promptIndex = prompts.findIndex((prompt) => prompt.id == promptId);
 
       prompts[promptIndex].isResponding = false;
-      prompts[promptIndex].isResponding = true;
+      prompts[promptIndex].isVoting = true;
 
-      let updatedPrompt = prompts[promptIndex];
-
+      // firebase does not support updating specific elements in array so
+      // workaround is to read array from db, update element on client,
+      // and replace array in firebase with new updated array
       await firebase.firestore
         .collection("groups")
         .doc(state.selectedGroup.id)
         .update({
-          activePrompts: firebase.firestore.FieldValue.arrayRemove(docIdString),
-          activePrompts: firebase.firestore.FieldValue.arrayUnion(
-            updatedPrompt
-          ),
+          activePrompts: prompts,
         });
     } catch (error) {
       console.log(error);

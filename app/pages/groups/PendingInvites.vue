@@ -47,7 +47,7 @@ export default {
         .then(() => {
           this.$navigateTo(
             routes.home
-            // { clearHistory: true },
+            // { clearHistory: true }
             // { backstackVisible: false }
           );
         })

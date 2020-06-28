@@ -1,6 +1,10 @@
 import firebase from "nativescript-plugin-firebase";
 
 import store from "~/store";
+import PromptService from "~/services/PromptService";
+
+export const promptService = new PromptService();
+
 const state = store.state;
 
 // collection.where()
@@ -76,6 +80,12 @@ export default class GroupService {
         .update({
           isActive: true,
         });
+
+      const prompts = state.prompts;
+      const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+      await promptService.createPrompt(prompt, groupIdString).catch((err) => {
+        console.error(err);
+      });
     } catch (e) {
       console.log(e);
     }

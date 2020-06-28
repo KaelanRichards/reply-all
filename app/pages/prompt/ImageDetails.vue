@@ -78,8 +78,13 @@ export default {
                 .then((usersResponded) => {
                   const groupUsers = this.$store.state.selectedGroup.groupUsers;
                   // check if all of the users have voted
-                  if (groupsUsers.length === usersResponded.Length) {
+                  if (groupUsers.length === usersResponded.length) {
                     this.$promptService.groupResponded(this.navObject.promptId);
+                    this.$navigateTo(
+                      routes.home,
+                      { clearHistory: true }
+                      // { backstackVisible: false }
+                    );
                   } else {
                     this.$navigateTo(
                       routes.home,
