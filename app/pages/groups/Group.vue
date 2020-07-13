@@ -9,7 +9,7 @@
         v-for="response in responsePrompts"
         :key="response.id"
         :columns="60"
-        :promptName="response.promptText"
+        :promptText="response.promptText"
         :promptId="response.id"
         promptType="respond"
       ></ProgressPrompt>
@@ -18,7 +18,7 @@
         v-for="vote in votePrompts"
         :key="vote.id"
         :columns="75"
-        :promptName="vote.promptText"
+        :promptText="vote.promptText"
         :promptId="vote.id"
         promptType="vote"
       ></ProgressPrompt>
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       progess: 30,
-      promptName: "You mom is FAT!!!!",
+      promptText: "You mom is FAT!!!!",
       promptId: "",
       promptType: {
         vote: "vote",

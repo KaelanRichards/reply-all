@@ -84,7 +84,76 @@ export default class PromptService {
     }
   }
 
-  async userVoted() {}
+  async userVoted(userId, promptId, votedFor) {
+    const docIdString = String(promptId);
+    await firebase.firestore
+      .collection("prompts")
+      .doc(docIdString)
+      .update({
+        usersVoted: firebase.firestore.FieldValue.arrayUnion(userId),
+      });
+
+    const promptReference = await firebase.firestore
+      .collection("prompts")
+      .doc(docIdString);
+
+    const promptSnapshot = await firebase.firestore
+      .collection("prompts")
+      .doc(docIdString)
+      .get();
+
+    const promptDocData = promptSnapshot.data();
+    if (!promptDocData) {
+      console.log("City SF doesn't exist");
+    } else {
+      if (!promptDocData.voteSubmission) {
+        await firebase.firestore.set(
+          "prompts",
+          docIdString,
+          {
+            voteSubmission: [
+              {
+                userVoted: userId,
+                votedFor: votedFor,
+              },
+            ],
+          },
+          { merge: true }
+        );
+      } else {
+        let submissions = promptDocData.voteSubmission;
+        submissions.push({
+          userVoted: userId,
+          votedFor: votedFor,
+        });
+
+        await firebase.firestore
+          .collection("prompts")
+          .doc(docIdString)
+          .update({
+            voteSubmission: submissions,
+          });
+      }
+    }
+
+    // // create user document in firestores
+    // await firebase.firestore
+    //   .collection("prompt")
+    //   .doc(docIdString)
+    //   .set(
+    //     {
+    //       voteSubmission: {
+    //         userVoted: userId,
+    //         votedFor: votedFor,
+    //       },
+    //     },
+    //     { merge: true }
+    //   );
+
+    const usersResponded = promptSnapshot.data().usersVoted;
+
+    return usersResponded;
+  }
 
   async groupResponded(promptId) {
     try {

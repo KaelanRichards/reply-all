@@ -7,6 +7,7 @@ import Vote from "~/pages/prompt/PromptVote";
 import Respond from "~/pages/prompt/PromptRespond";
 import Respondv2 from "~/pages/prompt/PromptRespondv2";
 import Invites from "~/pages/groups/PendingInvites";
+import ImageView from "~/pages/prompt/ImageVoteView";
 
 const routes = {
   home: Groups,
@@ -18,6 +19,7 @@ const routes = {
   respond: Respondv2,
   test: Respondv2,
   invites: Invites,
+  imageView: ImageView,
 };
 
 export default routes;

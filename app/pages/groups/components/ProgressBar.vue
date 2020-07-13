@@ -2,9 +2,9 @@ https://www.nativescript.org/blog/building-a-simple-progressbar-for-your-natives
 
 <template>
   <StackLayout @tap="goToPage">
-    <GridLayout :columns="columnsVal" class="progressbar">
+    <GridLayout :columns="columns" class="progressbar">
       <StackLayout col="0" class="progressbar-value"> </StackLayout>
-      <Label :text="promptNameVal" class="progressbar-text"></Label>
+      <Label :text="promptText" class="progressbar-text"></Label>
     </GridLayout>
   </StackLayout>
 </template>
@@ -15,16 +15,9 @@ import routes from "~/router";
 export default {
   props: {
     columns: Number,
-    promptName: String,
+    promptText: String,
     promptType: String,
-    promptId: String,
-  },
-  data() {
-    return {
-      propVal: this.propsVal,
-      columnsVal: this.columns,
-      promptNameVal: this.promptName,
-    };
+    promptId: Number,
   },
 
   methods: {
@@ -33,7 +26,7 @@ export default {
     },
     goToPage() {
       let prompt = {
-        promptName: this.promptName,
+        promptText: this.promptText,
         promptId: this.promptId,
       };
       if (this.promptType === "vote") {

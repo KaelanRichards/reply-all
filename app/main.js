@@ -11,6 +11,7 @@ import GroupService from "./services/GroupService";
 import SearchService from "./services/SearchService";
 import PromptService from "./services/PromptService";
 import ImageService from "./services/ImageService";
+import Pager from "nativescript-pager/vue";
 
 export const backendService = new BackendService();
 export const userService = new UserService();
@@ -28,6 +29,8 @@ Vue.prototype.$imageService = imageService;
 // Vue.prototype.$changeRoute = (to, options) => {
 //   Vue.navigateTo(routes[to], options);
 // };
+
+Vue.use(Pager);
 
 Vue.registerElement(
   "CardView",

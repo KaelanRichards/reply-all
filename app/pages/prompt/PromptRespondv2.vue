@@ -75,7 +75,7 @@ export default {
                 image: savedImage,
                 path: path,
                 fileName: filename,
-                promptName: this.prompt.promptName,
+                promptText: this.prompt.promptText,
                 promptId: this.prompt.promptId,
               };
               this.$navigateTo(ImageDetails, {
